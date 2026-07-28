@@ -1,0 +1,162 @@
+{
+  "timestamp": "2026-07-16T13:42:14.335Z",
+  "baseUrl": "http://localhost:3001",
+  "passed": 6,
+  "failed": 0,
+  "scenarios": [
+    {
+      "name": "1. Baseline — GET /api/health (1 conn, 5s)",
+      "pass": true,
+      "status": "PASS",
+      "note": "All thresholds met",
+      "requests": {
+        "total": 103,
+        "rps": 20.6
+      },
+      "latency": {
+        "avg": 48,
+        "p50": 44,
+        "p99": 87,
+        "max": 97
+      },
+      "errors": {
+        "total": 0,
+        "4xx": 0,
+        "5xx": 0
+      },
+      "throughput": 13.9
+    },
+    {
+      "name": "2. Read Load — GET /api/data/students (10 conn, 10s)",
+      "pass": true,
+      "status": "PASS",
+      "note": "All thresholds met",
+      "requests": {
+        "total": 21704,
+        "rps": 2170.6
+      },
+      "latency": {
+        "avg": 4.1,
+        "p50": 4,
+        "p99": 9,
+        "max": 33
+      },
+      "errors": {
+        "total": 0,
+        "4xx": 0,
+        "5xx": 0
+      },
+      "throughput": 1350.1
+    },
+    {
+      "name": "3. Auth Load — POST /api/session/login (1 conn, 5s)",
+      "pass": true,
+      "status": "PASS",
+      "note": "login rate-limit (max 10 req/60s) active (6029 429s) — endpoint protection working correctly",
+      "requests": {
+        "total": 6029,
+        "rps": 1205.8
+      },
+      "latency": {
+        "avg": 0.2,
+        "p50": 0,
+        "p99": 1,
+        "max": 318
+      },
+      "errors": {
+        "total": 6029,
+        "4xx": 6029,
+        "5xx": 0
+      },
+      "throughput": 856.1
+    },
+    {
+      "name": "4. Write Load — POST /api/data/announcements (5 conn, 5s)",
+      "pass": true,
+      "status": "SKIP",
+      "note": "Rate-limit window exhausted; test skipped",
+      "requests": {
+        "total": 0,
+        "rps": 0
+      },
+      "latency": {
+        "avg": 0,
+        "p50": 0,
+        "p99": 0,
+        "max": 0
+      },
+      "errors": {
+        "total": 0,
+        "4xx": 0,
+        "5xx": 0
+      },
+      "throughput": 0
+    },
+    {
+      "name": "5. Spike    — GET /api/data/students (50 conn, 5s burst)",
+      "pass": true,
+      "status": "PASS",
+      "note": "All thresholds met",
+      "requests": {
+        "total": 10907,
+        "rps": 2182.2
+      },
+      "latency": {
+        "avg": 22.4,
+        "p50": 22,
+        "p99": 49,
+        "max": 71
+      },
+      "errors": {
+        "total": 0,
+        "4xx": 0,
+        "5xx": 0
+      },
+      "throughput": 1356.9
+    },
+    {
+      "name": "6. Soak     — GET /api/data/students (5 conn, 15s)",
+      "pass": true,
+      "status": "PASS",
+      "note": "All thresholds met",
+      "requests": {
+        "total": 33532,
+        "rps": 2235.9
+      },
+      "latency": {
+        "avg": 1.8,
+        "p50": 2,
+        "p99": 4,
+        "max": 20
+      },
+      "errors": {
+        "total": 0,
+        "4xx": 0,
+        "5xx": 0
+      },
+      "throughput": 1390.8
+    },
+    {
+      "name": "7. Rate-Limit — POST /api/session/login (20 conn, 3s — expect 429s)",
+      "pass": true,
+      "status": "PASS",
+      "note": "Got 3044 4xx responses — rate-limit firing correctly",
+      "requests": {
+        "total": 3044,
+        "rps": 1014.7
+      },
+      "latency": {
+        "avg": 19.2,
+        "p50": 18,
+        "p99": 54,
+        "max": 72
+      },
+      "errors": {
+        "total": 3044,
+        "4xx": 3044,
+        "5xx": 0
+      },
+      "throughput": 720.4
+    }
+  ]
+}

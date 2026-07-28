@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"C:\\\\Users\\\\abish\\\\Downloads\\\\diwan-main\\\\\" && echo \"---DIWAN-MAIN---\" && ls -la \"C:\\\\Users\\\\abish\\\\Downloads\\\\diwan-main\\\\diwan-main\" && echo \"---PARENT-APP---\" && ls -la \"C:\\\\Users\\\\abish\\\\Downloads\\\\diwan-main\\\\parent-app\")",
+      "Bash(curl -s -o /dev/null -w \"vite\\(3000\\): %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"api\\(3001\\): %{http_code}\\\\n\" http://localhost:3001/api/health)",
+      "Bash(flutter --version)",
+      "Bash(flutter.bat --version)",
+      "Bash(cmd.exe /c \"where flutter\")",
+      "Bash(cmd.exe /c \"where dart\")",
+      "Bash(cmd.exe /c \"curl -s https://pub.dev/api/packages/liquid_progress_indicator_v2\")",
+      "WebFetch(domain:pub.dev)",
+      "Bash(:)",
+      "Bash(break)",
+      "Bash(curl -s -o /dev/null -w \"parent-app\\(5000\\): %{http_code}\\\\n\" http://localhost:5000/)",
+      "Bash(curl -s http://localhost:3001/api/health)",
+      "Bash(node -e ' *)",
+      "Bash(nohup npm run dev:api)",
+      "Bash(echo \"launched API PID $!\")",
+      "Bash(curl -s -i -X OPTIONS http://localhost:3001/api/session/login -H 'Origin: http://localhost:5000' -H 'Access-Control-Request-Method: POST')",
+      "Bash(curl -s -X POST http://localhost:3001/api/session/login -H 'Origin: http://localhost:5000' -H 'Content-Type: application/json' -d '{\"email\":\"hassan999@omantel.net.om\",\"password\":\"BNbir329\"}')",
+      "Bash(node -e 'let s=\"\";process.stdin.on\\(\"data\",d=>s+=d\\).on\\(\"end\",\\(\\)=>{try{const j=JSON.parse\\(s\\);if\\(j.token\\){console.log\\(\"LOGIN OK | role:\",j.user&&j.user.role,\"| name:\",j.user&&\\(j.user.displayName||j.user.name\\)\\);}else{console.log\\(\"LOGIN FAILED ->\",JSON.stringify\\(j\\)\\);}}catch\\(e\\){console.log\\(\"resp:\",s\\);}}\\)')",
+      "Bash(C:/src/flutter/bin/flutter.bat analyze *)",
+      "Bash(C:/src/flutter/bin/flutter.bat build *)"
+    ]
+  }
+}

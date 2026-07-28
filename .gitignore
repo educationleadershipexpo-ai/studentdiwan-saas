@@ -1,0 +1,56 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node dependency and build files
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/.next/
+**/.vercel/
+
+# Local SQLite databases in any folder
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+local_database.db
+local_database.db-shm
+local_database.db-wal
+
+# Database backups - never commit
+**/backups/
+
+# Environment / API Keys / Secrets
+**/.env*
+**/.session-secret*
+
+# IDE/Editor directories
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Flutter / Dart build files
+**/.dart_tool/
+**/.packages
+**/.pub-cache/
+**/.pub/
+**/build/
+**/coverage/
+
+# OS-specific
+Thumbs.db
+.AppleDouble
+.LSOverride

@@ -1,0 +1,90 @@
+{
+  "timestamp": "2026-07-16T16:34:04.437Z",
+  "passed": 4,
+  "failed": 3,
+  "total": 7,
+  "statistics": {
+    "englishKeys": 6421,
+    "arabicKeys": 6421,
+    "missingInAr": 0,
+    "missingInEn": 0,
+    "emptyInEn": 2,
+    "emptyInAr": 2,
+    "placeholderMismatchesCount": 7
+  },
+  "missingInAr": [],
+  "missingInEn": [],
+  "emptyInEn": [
+    "shared.notifications.describe.recipient_unused_placeholder",
+    "admin.academics.achievements.editingSuffix"
+  ],
+  "emptyInAr": [
+    "shared.notifications.describe.recipient_unused_placeholder",
+    "admin.academics.achievements.editingSuffix"
+  ],
+  "placeholderMismatches": [
+    {
+      "key": "student.flashcards.cardsCount_one",
+      "en": "{{count}} card",
+      "ar": "بطاقة واحدة",
+      "enPlaceholders": [
+        "count"
+      ],
+      "arPlaceholders": []
+    },
+    {
+      "key": "student.flashcards.knownCount_one",
+      "en": "{{count}} Known",
+      "ar": "بطاقة واحدة معروفة",
+      "enPlaceholders": [
+        "count"
+      ],
+      "arPlaceholders": []
+    },
+    {
+      "key": "student.flashcards.learningCount_one",
+      "en": "{{count}} Learning",
+      "ar": "بطاقة واحدة قيد التعلم",
+      "enPlaceholders": [
+        "count"
+      ],
+      "arPlaceholders": []
+    },
+    {
+      "key": "student.flashcards.toReviewCount_one",
+      "en": "{{count}} to review",
+      "ar": "بطاقة واحدة للمراجعة",
+      "enPlaceholders": [
+        "count"
+      ],
+      "arPlaceholders": []
+    },
+    {
+      "key": "student.library.daysOverdueOne",
+      "en": "{{count}} day overdue",
+      "ar": "متأخر بيوم واحد",
+      "enPlaceholders": [
+        "count"
+      ],
+      "arPlaceholders": []
+    },
+    {
+      "key": "shared.notifications.toastSelectedDeleted_one",
+      "en": "{{count}} notification deleted",
+      "ar": "تم حذف إشعار واحد",
+      "enPlaceholders": [
+        "count"
+      ],
+      "arPlaceholders": []
+    },
+    {
+      "key": "shared.notifications.confirmDeleteSelectedTitle_one",
+      "en": "Delete {{count}} notification?",
+      "ar": "حذف إشعار واحد؟",
+      "enPlaceholders": [
+        "count"
+      ],
+      "arPlaceholders": []
+    }
+  ]
+}

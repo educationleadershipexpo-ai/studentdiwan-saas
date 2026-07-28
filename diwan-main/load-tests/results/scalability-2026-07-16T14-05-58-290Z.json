@@ -1,0 +1,168 @@
+{
+  "timestamp": "2026-07-16T14:05:58.289Z",
+  "baseUrl": "http://localhost:5350",
+  "passed": 4,
+  "failed": 0,
+  "total": 4,
+  "suites": [
+    {
+      "name": "dataVolume",
+      "pass": true,
+      "status": "PASS",
+      "note": "Read p99 18ms → 149ms (8.3x) from 100 to 10000 rows — absolute p99 within 2000ms",
+      "data": [
+        {
+          "rowCount": 100,
+          "seedMs": 8,
+          "readRps": 1435.7,
+          "readP99Ms": 18,
+          "readAvgMs": 3,
+          "writeMs": 13.6,
+          "writeStatus": 201
+        },
+        {
+          "rowCount": 1000,
+          "seedMs": 12,
+          "readRps": 300.3,
+          "readP99Ms": 32,
+          "readAvgMs": 16.1,
+          "writeMs": 8.3,
+          "writeStatus": 201
+        },
+        {
+          "rowCount": 5000,
+          "seedMs": 77,
+          "readRps": 82.3,
+          "readP99Ms": 83,
+          "readAvgMs": 60.1,
+          "writeMs": 40.6,
+          "writeStatus": 201
+        },
+        {
+          "rowCount": 10000,
+          "seedMs": 168,
+          "readRps": 40.7,
+          "readP99Ms": 149,
+          "readAvgMs": 121,
+          "writeMs": 112.7,
+          "writeStatus": 201
+        }
+      ]
+    },
+    {
+      "name": "concurrency",
+      "pass": true,
+      "status": "PASS",
+      "note": "p99 3ms → 113ms (37.7x) across 1→50 conns — within thresholds | RPS 464 → 578 (125% retained) — throughput holds",
+      "data": [
+        {
+          "concurrency": 1,
+          "rps": 463.8,
+          "p50": 2,
+          "p99": 3,
+          "max": 18,
+          "errors": 0
+        },
+        {
+          "concurrency": 5,
+          "rps": 544.4,
+          "p50": 9,
+          "p99": 23,
+          "max": 29,
+          "errors": 0
+        },
+        {
+          "concurrency": 10,
+          "rps": 521,
+          "p50": 18,
+          "p99": 35,
+          "max": 39,
+          "errors": 0
+        },
+        {
+          "concurrency": 25,
+          "rps": 529.4,
+          "p50": 46,
+          "p99": 70,
+          "max": 75,
+          "errors": 0
+        },
+        {
+          "concurrency": 50,
+          "rps": 577.8,
+          "p50": 85,
+          "p99": 113,
+          "max": 119,
+          "errors": 0
+        }
+      ]
+    },
+    {
+      "name": "payload",
+      "pass": true,
+      "status": "PASS",
+      "note": "200 KB POST max 28.8ms — within 2000ms threshold | 26 MB POST correctly rejected (HTTP 413 or connection reset)",
+      "data": [
+        {
+          "sizeKb": 1,
+          "avgMs": 4.4,
+          "maxMs": 11.7,
+          "ok": 5
+        },
+        {
+          "sizeKb": 10,
+          "avgMs": 2.8,
+          "maxMs": 3.3,
+          "ok": 5
+        },
+        {
+          "sizeKb": 50,
+          "avgMs": 4.3,
+          "maxMs": 4.9,
+          "ok": 5
+        },
+        {
+          "sizeKb": 200,
+          "avgMs": 15.4,
+          "maxMs": 28.8,
+          "ok": 5
+        }
+      ]
+    },
+    {
+      "name": "cache",
+      "pass": true,
+      "status": "PASS",
+      "note": "Cold read at 1k rows is ~2ms — SQLite WAL / OS cache, both paths trivially fast | Cold read at 10k rows: 80ms — within 2000ms",
+      "data": [
+        {
+          "rowCount": 1000,
+          "coldMs": 2,
+          "cachedMs": 16.9,
+          "invalMs": 21.7,
+          "speedup": 0.12,
+          "coldOk": true,
+          "warmOk": true
+        },
+        {
+          "rowCount": 5000,
+          "coldMs": 35.6,
+          "cachedMs": 10,
+          "invalMs": 37.9,
+          "speedup": 3.54,
+          "coldOk": true,
+          "warmOk": true
+        },
+        {
+          "rowCount": 10000,
+          "coldMs": 80.4,
+          "cachedMs": 24.3,
+          "invalMs": 84.7,
+          "speedup": 3.3,
+          "coldOk": true,
+          "warmOk": true
+        }
+      ]
+    }
+  ]
+}

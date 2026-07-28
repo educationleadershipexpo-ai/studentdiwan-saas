@@ -1,0 +1,47 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "studentdiwan-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "studentdiwan-vite-only",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:vite"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "studentdiwan-api-only",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:api"],
+      "port": 3001,
+      "autoPort": false
+    },
+    {
+      "name": "studentdiwan-alt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:alt"],
+      "port": 3100,
+      "autoPort": false
+    },
+    {
+      "name": "studentdiwan-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview"],
+      "port": 4173,
+      "autoPort": true
+    },
+    {
+      "name": "studentdiwan-legacy-server",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "server", "run", "dev"],
+      "port": 5000,
+      "autoPort": false
+    }
+  ]
+}

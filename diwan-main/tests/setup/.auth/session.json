@@ -1,0 +1,5 @@
+{
+  "sd_token": "eyJ1aWQiOiJhZG1pbkBlZHVlcnAuY29tIiwiZW1haWwiOiJhZG1pbkBlZHVlcnAuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg0MjQ3NTQ2NjcwLCJleHAiOjE3ODQyOTA3NDY2NzB9.zpYFvH7e5g4Om3aerOi97W5X6JkFp9ktJnCQhK4eo-E",
+  "sd_user": "{\"uid\":\"admin@eduerp.com\",\"email\":\"admin@eduerp.com\",\"displayName\":\"Admin User\",\"photoURL\":\"https://api.dicebear.com/9.x/notionists-neutral/svg?seed=admin@eduerp.com&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf&backgroundType=gradientLinear\",\"emailVerified\":true}",
+  "sd_role": "admin"
+}

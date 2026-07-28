@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-07-16T16:34:16.707Z",
+  "passed": 7,
+  "failed": 0,
+  "total": 7,
+  "statistics": {
+    "englishKeys": 6421,
+    "arabicKeys": 6421,
+    "missingInAr": 0,
+    "missingInEn": 0,
+    "emptyInEn": 0,
+    "emptyInAr": 0,
+    "placeholderMismatchesCount": 0
+  },
+  "missingInAr": [],
+  "missingInEn": [],
+  "emptyInEn": [],
+  "emptyInAr": [],
+  "placeholderMismatches": []
+}

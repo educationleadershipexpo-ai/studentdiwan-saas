@@ -1,0 +1,129 @@
+{
+  "timestamp": "2026-07-16T16:09:50.604Z",
+  "passed": 19,
+  "failed": 1,
+  "total": 20,
+  "deploymentReady": false,
+  "checks": [
+    {
+      "name": "TypeScript compilation",
+      "pass": true,
+      "status": "PASS",
+      "note": "0 type errors"
+    },
+    {
+      "name": "Frontend build (Vite)",
+      "pass": true,
+      "status": "PASS",
+      "note": "76.6s — dist/index.html present"
+    },
+    {
+      "name": "Backend bundle (esbuild)",
+      "pass": true,
+      "status": "PASS",
+      "note": "dist/server.js present"
+    },
+    {
+      "name": ".env file present",
+      "pass": true,
+      "status": "PASS",
+      "note": "Found"
+    },
+    {
+      "name": "DB_HOST configured in .env",
+      "pass": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "name": "PORT configured in .env",
+      "pass": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "name": "dist/ folder present",
+      "pass": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "name": "dist/firebase-blueprint.json present",
+      "pass": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "name": "Server startup",
+      "pass": true,
+      "status": "PASS",
+      "note": "dist/server.js :5400"
+    },
+    {
+      "name": "GET /api/health (200 or 503)",
+      "pass": true,
+      "status": "PASS",
+      "note": "HTTP 200 dbMode=sqlite"
+    },
+    {
+      "name": "Response has dbMode field",
+      "pass": true,
+      "status": "PASS",
+      "note": "dbMode=\"sqlite\""
+    },
+    {
+      "name": "GET / returns 200",
+      "pass": true,
+      "status": "PASS",
+      "note": "HTTP 200"
+    },
+    {
+      "name": "HTML has <title>",
+      "pass": true,
+      "status": "PASS",
+      "note": "Title tag present"
+    },
+    {
+      "name": "HTML references JS bundle",
+      "pass": true,
+      "status": "PASS",
+      "note": "Script tags present"
+    },
+    {
+      "name": "POST /api/session/login → 200 + token",
+      "pass": true,
+      "status": "PASS",
+      "note": "token issued"
+    },
+    {
+      "name": "GET /api/data/students (authed) → 200",
+      "pass": true,
+      "status": "PASS",
+      "note": "HTTP 200"
+    },
+    {
+      "name": "GET /api/data/students (no token) → 401",
+      "pass": true,
+      "status": "PASS",
+      "note": "HTTP 401"
+    },
+    {
+      "name": "POST /api/session/login (wrong creds) → 401",
+      "pass": true,
+      "status": "PASS",
+      "note": "HTTP 401"
+    },
+    {
+      "name": "Brute-force login triggers 429",
+      "pass": true,
+      "status": "PASS",
+      "note": "5/13 blocked"
+    },
+    {
+      "name": "Server exits cleanly on SIGTERM",
+      "pass": false,
+      "status": "FAIL",
+      "note": "Still responding after 1.5s"
+    }
+  ]
+}

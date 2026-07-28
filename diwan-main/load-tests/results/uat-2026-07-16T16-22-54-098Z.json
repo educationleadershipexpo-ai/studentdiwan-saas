@@ -1,0 +1,323 @@
+{
+  "timestamp": "2026-07-16T16:22:54.098Z",
+  "system": "Student Diwan School Management System",
+  "passed": 32,
+  "failed": 1,
+  "total": 33,
+  "accepted": false,
+  "suites": [
+    {
+      "name": "A — Authentication & Session",
+      "passed": 4,
+      "total": 5,
+      "scenarios": [
+        {
+          "suite": "A — Authentication & Session",
+          "name": "A1 — Admin can log in with valid credentials",
+          "pass": true,
+          "status": "PASS",
+          "note": "token issued, uid=abishsuresh01@gmail.com",
+          "detail": ""
+        },
+        {
+          "suite": "A — Authentication & Session",
+          "name": "A2 — Session token is a valid JWT (3-part format)",
+          "pass": true,
+          "status": "PASS",
+          "note": "token length=207, JWT-structured=false",
+          "detail": ""
+        },
+        {
+          "suite": "A — Authentication & Session",
+          "name": "A3 — Admin can log in multiple times (stateless / no single-use tokens)",
+          "pass": true,
+          "status": "PASS",
+          "note": "new token issued",
+          "detail": ""
+        },
+        {
+          "suite": "A — Authentication & Session",
+          "name": "A4 — Wrong password for known account rejected (401)",
+          "pass": false,
+          "status": "FAIL",
+          "note": "HTTP 200",
+          "detail": ""
+        },
+        {
+          "suite": "A — Authentication & Session",
+          "name": "A5 — Unknown account rejected with 401",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 401 (expected 401)",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "name": "B — Role-Based Access Control",
+      "passed": 6,
+      "total": 6,
+      "scenarios": [
+        {
+          "suite": "B — Role-Based Access Control",
+          "name": "B1 — Unauthenticated request blocked (401)",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 401",
+          "detail": ""
+        },
+        {
+          "suite": "B — Role-Based Access Control",
+          "name": "B2 — Admin can list students",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200, returned 110 students",
+          "detail": ""
+        },
+        {
+          "suite": "B — Role-Based Access Control",
+          "name": "B3 — Admin can access /api/data/staff",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200",
+          "detail": ""
+        },
+        {
+          "suite": "B — Role-Based Access Control",
+          "name": "B4 — Teacher can list students",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200",
+          "detail": ""
+        },
+        {
+          "suite": "B — Role-Based Access Control",
+          "name": "B5 — Tampered token is rejected (401)",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 401",
+          "detail": ""
+        },
+        {
+          "suite": "B — Role-Based Access Control",
+          "name": "B6 — Missing auth header → 401",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 401",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "name": "C — Student Management",
+      "passed": 6,
+      "total": 6,
+      "scenarios": [
+        {
+          "suite": "C — Student Management",
+          "name": "C1 — Admin can view full student list",
+          "pass": true,
+          "status": "PASS",
+          "note": "110 students returned",
+          "detail": ""
+        },
+        {
+          "suite": "C — Student Management",
+          "name": "C2 — Student records contain required fields (name, grade, status)",
+          "pass": true,
+          "status": "PASS",
+          "note": "name=\"Neha Malhotra\", grade=12, status=Active",
+          "detail": ""
+        },
+        {
+          "suite": "C — Student Management",
+          "name": "C3 — Admin can create a new student",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 201 id=oeymqjmw71t",
+          "detail": ""
+        },
+        {
+          "suite": "C — Student Management",
+          "name": "C4 — Student list can be filtered by grade",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200, returned 10 grade-7 students",
+          "detail": ""
+        },
+        {
+          "suite": "C — Student Management",
+          "name": "C5 — Student search returns matching results",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200, returned 0 results",
+          "detail": ""
+        },
+        {
+          "suite": "C — Student Management",
+          "name": "C6 — Student records include risk assessment data",
+          "pass": true,
+          "status": "PASS",
+          "note": "riskScore=5 for \"Maryam Ahmed Al-Balushi\"",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "name": "D — Attendance",
+      "passed": 4,
+      "total": 4,
+      "scenarios": [
+        {
+          "suite": "D — Attendance",
+          "name": "D1 — Admin can read attendance records",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200, 744 records",
+          "detail": ""
+        },
+        {
+          "suite": "D — Attendance",
+          "name": "D2 — Admin can submit attendance for a class",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 201 for date=2026-07-16",
+          "detail": ""
+        },
+        {
+          "suite": "D — Attendance",
+          "name": "D3 — Teacher can submit attendance (not blocked by RBAC)",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 201",
+          "detail": ""
+        },
+        {
+          "suite": "D — Attendance",
+          "name": "D4 — Attendance records include date and studentId fields",
+          "pass": "2026-07-16",
+          "status": "PASS",
+          "note": "Sample keys: date, classId, attendance, id, uid",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "name": "E — Data Integrity & Validation",
+      "passed": 5,
+      "total": 5,
+      "scenarios": [
+        {
+          "suite": "E — Data Integrity & Validation",
+          "name": "E1 — /api/health returns structured JSON with dbMode",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200, dbMode=\"sqlite\", uptime=?s",
+          "detail": ""
+        },
+        {
+          "suite": "E — Data Integrity & Validation",
+          "name": "E2 — Malformed login payload rejected (400 or 401)",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 401",
+          "detail": ""
+        },
+        {
+          "suite": "E — Data Integrity & Validation",
+          "name": "E3 — API responses have application/json Content-Type",
+          "pass": true,
+          "status": "PASS",
+          "note": "Content-Type: application/json; charset=utf-8",
+          "detail": ""
+        },
+        {
+          "suite": "E — Data Integrity & Validation",
+          "name": "E4 — CORS headers present on OPTIONS preflight",
+          "pass": true,
+          "status": "PASS",
+          "note": "Access-Control-Allow-Origin: \"http://localhost:3000\" HTTP 204",
+          "detail": ""
+        },
+        {
+          "suite": "E — Data Integrity & Validation",
+          "name": "E5 — Large dataset request completes without server crash",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "name": "F — Password & Account Security",
+      "passed": 4,
+      "total": 4,
+      "scenarios": [
+        {
+          "suite": "F — Password & Account Security",
+          "name": "F1 — Brute-force login blocked with HTTP 429",
+          "pass": true,
+          "status": "PASS",
+          "note": "7/12 attempts blocked",
+          "detail": ""
+        },
+        {
+          "suite": "F — Password & Account Security",
+          "name": "F2 — Forgot-password endpoint reachable (200 or 500/503)",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200 (500/503 = SMTP not configured, still acceptable)",
+          "detail": ""
+        },
+        {
+          "suite": "F — Password & Account Security",
+          "name": "F3 — Reset-password with invalid token rejected (400/401/404)",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 400",
+          "detail": ""
+        },
+        {
+          "suite": "F — Password & Account Security",
+          "name": "F4 — Empty password login rejected (401 or 429)",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 429 (401=bad creds, 429=rate-limited, both correct)",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "name": "G — System Health",
+      "passed": 3,
+      "total": 3,
+      "scenarios": [
+        {
+          "suite": "G — System Health",
+          "name": "G1 — Server health endpoint responds consistently over time",
+          "pass": true,
+          "status": "PASS",
+          "note": "Call 1: HTTP 200 dbMode=sqlite | Call 2: HTTP 200 dbMode=sqlite",
+          "detail": ""
+        },
+        {
+          "suite": "G — System Health",
+          "name": "G2 — Unknown API route returns 404 or SPA fallback (no crash)",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200 (404=API not found, 200=SPA fallback, both OK — no 500)",
+          "detail": ""
+        },
+        {
+          "suite": "G — System Health",
+          "name": "G3 — SPA fallback serves index.html for /dashboard",
+          "pass": true,
+          "status": "PASS",
+          "note": "HTTP 200, title tag present=true",
+          "detail": ""
+        }
+      ]
+    }
+  ]
+}

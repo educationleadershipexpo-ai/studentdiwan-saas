@@ -1,0 +1,77 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "studentdiwan-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "diwan-main", "run", "dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "studentdiwan-vite-only",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "diwan-main", "run", "dev:vite"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "studentdiwan-api-only",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "diwan-main", "run", "dev:api"],
+      "port": 3001,
+      "autoPort": true
+    },
+    {
+      "name": "studentdiwan-alt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "diwan-main", "run", "dev:alt"],
+      "port": 3100,
+      "autoPort": false
+    },
+    {
+      "name": "studentdiwan-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "diwan-main", "run", "preview"],
+      "port": 4173,
+      "autoPort": true
+    },
+    {
+      "name": "studentdiwan-legacy-server",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "diwan-main/server", "run", "dev"],
+      "port": 5000,
+      "autoPort": false
+    },
+    {
+      "name": "unified-app",
+      "runtimeExecutable": "C:\\src\\flutter\\bin\\flutter.bat",
+      "runtimeArgs": [
+        "run",
+        "-d",
+        "web-server",
+        "--web-port=5011",
+        "--web-hostname=127.0.0.1",
+        "--dart-define=API_URL=http://localhost:3001/api",
+        "--dart-define=ENV=development"
+      ],
+      "cwd": "student-app",
+      "port": 5011,
+      "autoPort": false
+    },
+    {
+      "name": "mobile-build-web",
+      "runtimeExecutable": "C:\\Program Files\\Python313\\python.exe",
+      "runtimeArgs": ["-m", "http.server", "5012", "--directory", "student-app/build/web"],
+      "port": 5012,
+      "autoPort": false
+    },
+    {
+      "name": "mobile-build-web-cors",
+      "runtimeExecutable": "C:\\Program Files\\Python313\\python.exe",
+      "runtimeArgs": ["-m", "http.server", "5002", "--directory", "student-app/build/web"],
+      "port": 5002,
+      "autoPort": false
+    }
+  ]
+}

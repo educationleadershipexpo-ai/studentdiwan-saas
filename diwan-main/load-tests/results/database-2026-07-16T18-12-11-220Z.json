@@ -1,0 +1,140 @@
+{
+  "timestamp": "2026-07-16T18:12:11.220Z",
+  "passed": 22,
+  "failed": 0,
+  "total": 22,
+  "checks": [
+    {
+      "suite": "SQLite",
+      "name": "Establish Database Connection",
+      "pass": true,
+      "note": "Connected to SQLite at: C:\\Users\\abish\\Downloads\\diwan-main\\diwan-main\\local_database.db"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Check existence of 'students' table",
+      "pass": true,
+      "note": "Table present"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Verify base table layout (id, data, uid, createdAt, updatedAt)",
+      "pass": true,
+      "note": "Columns found: id, data, uid, createdAt, updatedAt"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Create temporary test table",
+      "pass": true,
+      "note": "Table \"db_test_temp_sqlite\" created"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Insert record into test table",
+      "pass": true,
+      "note": "Record inserted successfully"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Select and parse record back",
+      "pass": true,
+      "note": "Parsed data: {\"name\":\"SQLite Test Student\",\"value\":123}"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Update existing record",
+      "pass": true,
+      "note": "Updated data: {\"name\":\"SQLite Test Student\",\"value\":456}"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Upsert record (INSERT OR REPLACE)",
+      "pass": true,
+      "note": "Upserted data: {\"name\":\"SQLite Upserted\",\"value\":789}"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Unicode support verification (Arabic text)",
+      "pass": true,
+      "note": "Stored text: مدرسة ديوان - SQLite"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Clean up temporary table",
+      "pass": true,
+      "note": "Dropped temp table successfully"
+    },
+    {
+      "suite": "SQLite",
+      "name": "Verify index definitions on students table",
+      "pass": true,
+      "note": "Indexes found: sqlite_autoindex_students_1"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Establish MySQL Connection",
+      "pass": true,
+      "note": "Connected to 217.21.85.14/nobl6990_Demo1-SD"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Check existence of 'students' table",
+      "pass": true,
+      "note": "Table present"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Verify base table layout (id, data, uid, createdAt, updatedAt)",
+      "pass": true,
+      "note": "Columns found: id, data, uid, createdAt, updatedAt"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Create temporary test table",
+      "pass": true,
+      "note": "Table \"db_test_temp_mysql\" created with UTF8mb4 encoding"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Insert record into test table",
+      "pass": true,
+      "note": "Record inserted successfully"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Select and parse record back",
+      "pass": true,
+      "note": "Parsed data: {\"name\":\"MySQL Test Student\",\"value\":999}"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Update existing record",
+      "pass": true,
+      "note": "Updated data: {\"name\":\"MySQL Test Student\",\"value\":888}"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Upsert record (ON DUPLICATE KEY UPDATE)",
+      "pass": true,
+      "note": "Upserted data: {\"name\":\"MySQL Upserted\",\"value\":777}"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Unicode support verification (Arabic text)",
+      "pass": true,
+      "note": "Stored text: مدرسة ديوان - MySQL"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Clean up temporary table",
+      "pass": true,
+      "note": "Dropped temp table successfully"
+    },
+    {
+      "suite": "MySQL",
+      "name": "Verify performance index definitions on students table",
+      "pass": true,
+      "note": "Indexes found: idx_uid, idx_created"
+    }
+  ]
+}

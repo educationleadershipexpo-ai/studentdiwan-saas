@@ -1,0 +1,168 @@
+{
+  "timestamp": "2026-07-16T13:53:12.683Z",
+  "baseUrl": "http://localhost:5350",
+  "passed": 3,
+  "failed": 1,
+  "total": 4,
+  "suites": [
+    {
+      "name": "dataVolume",
+      "pass": true,
+      "status": "PASS",
+      "note": "Read p99 5ms → 165ms (33.0x) from 100 to 10000 rows — absolute p99 within 2000ms",
+      "data": [
+        {
+          "rowCount": 100,
+          "seedMs": 8,
+          "readRps": 2556.3,
+          "readP99Ms": 5,
+          "readAvgMs": 1.4,
+          "writeMs": 18.7,
+          "writeStatus": 201
+        },
+        {
+          "rowCount": 1000,
+          "seedMs": 16,
+          "readRps": 301,
+          "readP99Ms": 36,
+          "readAvgMs": 16.1,
+          "writeMs": 10.6,
+          "writeStatus": 201
+        },
+        {
+          "rowCount": 5000,
+          "seedMs": 65,
+          "readRps": 79.3,
+          "readP99Ms": 109,
+          "readAvgMs": 62.2,
+          "writeMs": 49.2,
+          "writeStatus": 201
+        },
+        {
+          "rowCount": 10000,
+          "seedMs": 147,
+          "readRps": 40.3,
+          "readP99Ms": 165,
+          "readAvgMs": 121.2,
+          "writeMs": 127,
+          "writeStatus": 201
+        }
+      ]
+    },
+    {
+      "name": "concurrency",
+      "pass": false,
+      "status": "FAIL",
+      "note": "p99 at 50 conns (141ms) is 47.0x the 1-conn baseline (3ms) — non-linear degradation | RPS 440 → 523 (119% retained) — throughput holds",
+      "data": [
+        {
+          "concurrency": 1,
+          "rps": 439.6,
+          "p50": 2,
+          "p99": 3,
+          "max": 17,
+          "errors": 0
+        },
+        {
+          "concurrency": 5,
+          "rps": 537.8,
+          "p50": 8,
+          "p99": 24,
+          "max": 30,
+          "errors": 0
+        },
+        {
+          "concurrency": 10,
+          "rps": 618,
+          "p50": 14,
+          "p99": 33,
+          "max": 42,
+          "errors": 0
+        },
+        {
+          "concurrency": 25,
+          "rps": 592.4,
+          "p50": 38,
+          "p99": 62,
+          "max": 76,
+          "errors": 0
+        },
+        {
+          "concurrency": 50,
+          "rps": 522.6,
+          "p50": 88,
+          "p99": 141,
+          "max": 161,
+          "errors": 0
+        }
+      ]
+    },
+    {
+      "name": "payload",
+      "pass": true,
+      "status": "PASS",
+      "note": "200 KB POST max 14.2ms — within 2000ms threshold | 26 MB POST correctly rejected (HTTP 413 or connection reset)",
+      "data": [
+        {
+          "sizeKb": 1,
+          "avgMs": 4.8,
+          "maxMs": 11.6,
+          "ok": 5
+        },
+        {
+          "sizeKb": 10,
+          "avgMs": 3.7,
+          "maxMs": 4,
+          "ok": 5
+        },
+        {
+          "sizeKb": 50,
+          "avgMs": 6.2,
+          "maxMs": 6.6,
+          "ok": 5
+        },
+        {
+          "sizeKb": 200,
+          "avgMs": 10.3,
+          "maxMs": 14.2,
+          "ok": 5
+        }
+      ]
+    },
+    {
+      "name": "cache",
+      "pass": true,
+      "status": "PASS",
+      "note": "Cache speedup at 1k rows: 2.81x (cold 15ms → cached 5ms) | Cold read at 10k rows: 81ms — within 2000ms",
+      "data": [
+        {
+          "rowCount": 1000,
+          "coldMs": 14.6,
+          "cachedMs": 5.2,
+          "invalMs": 15.2,
+          "speedup": 2.84,
+          "coldOk": true,
+          "warmOk": true
+        },
+        {
+          "rowCount": 5000,
+          "coldMs": 38.2,
+          "cachedMs": 16.6,
+          "invalMs": 31.2,
+          "speedup": 2.31,
+          "coldOk": true,
+          "warmOk": true
+        },
+        {
+          "rowCount": 10000,
+          "coldMs": 80.5,
+          "cachedMs": 27.8,
+          "invalMs": 162.3,
+          "speedup": 2.89,
+          "coldOk": true,
+          "warmOk": true
+        }
+      ]
+    }
+  ]
+}

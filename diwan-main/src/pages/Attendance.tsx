@@ -195,10 +195,16 @@ const Attendance = () => {
   const availableGrades = useMemo(() => {
     const set = new Set<string>();
     if (curriculumGrades?.length) {
-      curriculumGrades.forEach((g) => { if (g) set.add(g); });
+      curriculumGrades.forEach((g) => {
+        if (g) {
+          const cleanG = g.replace(/\s*(?:-|–|—|Section|Sec)\s*[A-Z]$/i, "").trim();
+          const formatted = cleanG.startsWith("Grade") || cleanG.startsWith("KG") || cleanG.startsWith("Pre") ? cleanG : `Grade ${cleanG}`;
+          set.add(formatted);
+        }
+      });
     }
     students.forEach((s) => {
-      const g = s.grade || studentGrade(s.rawStudent || s);
+      const g = s.grade || extractPureGrade(s.rawStudent || s);
       if (g) set.add(g);
     });
     return Array.from(set).sort((a, b) => {
@@ -212,12 +218,17 @@ const Attendance = () => {
   const availableSections = useMemo(() => {
     const set = new Set<string>();
     students.forEach((s) => {
-      const sGrade = s.grade || studentGrade(s.rawStudent || s);
+      const sGrade = s.grade || extractPureGrade(s.rawStudent || s);
       if (studentGradeFilter === "all" || canonGrade(sGrade) === canonGrade(studentGradeFilter)) {
-        const sec = s.section || studentSection(s.rawStudent || s);
-        if (sec && sec !== "—") set.add(canonSection(sec));
+        const sec = s.section || extractPureSection(s.rawStudent || s);
+        if (sec) set.add(sec);
       }
     });
+
+    if (set.size === 0) {
+      ["A", "B", "C", "D"].forEach((sec) => set.add(sec));
+    }
+
     return Array.from(set).sort();
   }, [students, studentGradeFilter]);
 
@@ -226,8 +237,8 @@ const Attendance = () => {
     const matchesSearch = !q || s.name?.toLowerCase().includes(q) || s.id?.toLowerCase().includes(q);
     const matchesStatus = studentStatus === "all" || s.status === studentStatus;
     
-    const sGrade = s.grade || studentGrade(s.rawStudent || s);
-    const sSec = s.section || studentSection(s.rawStudent || s);
+    const sGrade = s.grade || extractPureGrade(s.rawStudent || s);
+    const sSec = s.section || extractPureSection(s.rawStudent || s);
 
     const matchesGrade = studentGradeFilter === "all" || canonGrade(sGrade) === canonGrade(studentGradeFilter);
     const matchesSection = studentSectionFilter === "all" || canonSection(sSec) === canonSection(studentSectionFilter);
@@ -776,6 +787,20 @@ const Attendance = () => {
   );
 };
 
+export function extractPureGrade(s: any): string {
+  let g = studentGrade(s);
+  if (!g) return "";
+  g = g.replace(/\s*(?:-|–|—|Section|Sec)\s*[A-Z]$/i, "").trim();
+  if (!g) return "";
+  return g.startsWith("Grade") || g.startsWith("KG") || g.startsWith("Pre") ? g : `Grade ${g}`;
+}
+
+export function extractPureSection(s: any): string {
+  let sec = studentSection(s);
+  if (!sec || sec === "—") return "";
+  return canonSection(sec);
+}
+
 // Pure helper — called once when attendance records arrive, not a hook
 function applyAttendance(
   records: any[],
@@ -796,9 +821,10 @@ function applyAttendance(
   setStudents(
     dbStudents.map((s) => {
       const r = stuMap.get(s.id);
-      const gradeVal = studentGrade(s);
-      const sectionVal = studentSection(s);
-      const normalizedClass = gradeVal && sectionVal ? `${gradeVal}-${sectionVal}` : gradeVal || s.classId || "Unassigned";
+      const gradeVal = extractPureGrade(s);
+      const sectionVal = extractPureSection(s);
+      const numGrade = gradeVal.replace(/^Grade\s*/i, "");
+      const normalizedClass = gradeVal && sectionVal ? `${numGrade}-${sectionVal}` : gradeVal || s.classId || "Unassigned";
       return {
         id: s.id,
         name: s.name,

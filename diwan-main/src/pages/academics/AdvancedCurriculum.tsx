@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -140,7 +140,7 @@ const CURRICULUM_TYPES: { id: CurriculumType; nameKey: string; descriptionKey: s
 ];
 
 // --- AI Service ---
-const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "NOT_CONFIGURED" });
 
 const generateLessonContentAI = async (params: { grade: string; subject: string; topic: string; subtopics: string[]; curriculumType: string; referenceMaterial?: string }) => {
   const model = genAI.models.generateContent({

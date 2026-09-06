@@ -66,7 +66,7 @@ import { GoogleGenAI } from "@google/genai";
 import { smartDb } from "@/lib/localDb";
 import { useAuth } from "@/hooks/useAuth";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "NOT_CONFIGURED" });
 
 async function apiSendEmail(payload: {
   to: string | string[];

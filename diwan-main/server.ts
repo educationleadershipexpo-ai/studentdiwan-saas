@@ -125,16 +125,6 @@ function requireAuth(req: express.Request, res: express.Response, next: express.
   const token = header.startsWith("Bearer ") ? header.slice(7) : undefined;
   const auth = verifySessionToken(token);
   if (!auth) {
-    // For GET data fetches, gracefully fall back to an active admin context if unauthenticated
-    // so client queries never fail with 401 empty screens on page reloads or cold starts.
-    if (req.method === "GET") {
-      (req as express.Request & { auth: SessionAuth }).auth = {
-        uid: "admin-uid",
-        email: "educationleadershipexpo@gmail.com",
-        role: "super_admin",
-      };
-      return next();
-    }
     return res.status(401).json({ error: "Not authenticated" });
   }
   (req as express.Request & { auth: SessionAuth }).auth = auth;
@@ -1831,6 +1821,19 @@ async function startServer() {
         data = data.slice(offset, offset + limit);
       }
 
+      if (entity === "users") {
+        data = data.map(item => {
+          if (!item) return item;
+          // Strip `password` (top-level credential hash) AND `data` (the raw
+          // DB column blob — a JSON string that itself contains `password`).
+          // The individual fields are already spread from parsedData above so
+          // the `data` blob is entirely redundant in the response and only
+          // serves as a second path for credential leakage.
+          const { password, data: _rawBlob, ...rest } = item;
+          return rest;
+        });
+      }
+
       return res.json(data);
     } catch (error) {
       console.error(`Error fetching ${entity}:`, error);
@@ -1916,6 +1919,10 @@ async function startServer() {
         if (item) {
           const restricted = await applyAppraisalRestriction(item);
           if (restricted === null) return res.status(403).json({ error: "Not authorized for this resource" });
+          if (entity === "users" && restricted) {
+            const { password, ...rest } = restricted;
+            return res.json(rest);
+          }
           return res.json(restricted);
         }
         // Real `users` rows are keyed by an internal id ("USER-STF-CT001"),
@@ -1923,7 +1930,10 @@ async function startServer() {
         // callers have) would otherwise always miss even once authorized.
         if (entity === "users" && id.includes("@")) {
           const byEmail = cachedList.find((x: any) => typeof x.email === "string" && x.email.toLowerCase() === id.toLowerCase());
-          if (byEmail) return res.json(byEmail);
+          if (byEmail) {
+            const { password, ...rest } = byEmail;
+            return res.json(rest);
+          }
         }
       }
 
@@ -1942,6 +1952,10 @@ async function startServer() {
         const result: any = { ...parsedData, id: row.id, uid: row.uid, createdAt: row.createdAt, updatedAt: row.updatedAt };
         const restricted = await applyAppraisalRestriction(result);
         if (restricted === null) return res.status(403).json({ error: "Not authorized for this resource" });
+        if (entity === "users" && restricted) {
+          const { password, ...rest } = restricted;
+          return res.json(rest);
+        }
         res.json(restricted);
       } else {
         res.status(404).json({ error: "Not found" });

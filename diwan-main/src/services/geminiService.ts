@@ -6,7 +6,7 @@ import { ALL_GUIDES } from "@/lib/userGuides";
 // The API key comes from VITE_GEMINI_API_KEY (shimmed onto process.env in main.tsx).
 // Never hardcode a key in source — it ships in the client bundle and leaks publicly.
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY || ""
+  apiKey: process.env.GEMINI_API_KEY || "NOT_CONFIGURED"
 });
 
 const HAS_KEY = !!process.env.GEMINI_API_KEY;

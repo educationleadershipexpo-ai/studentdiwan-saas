@@ -56,7 +56,7 @@ const AiTutor = () => {
     setIsLoading(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "NOT_CONFIGURED" });
       // Real student context — grade/section from the real Student record,
       // real published subjects for that grade from Curriculum — so answers
       // can actually reference what this student is studying, instead of

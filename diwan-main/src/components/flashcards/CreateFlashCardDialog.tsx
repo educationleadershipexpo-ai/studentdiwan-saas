@@ -64,7 +64,7 @@ const CreateFlashCardDialog: React.FC<CreateFlashCardDialogProps> = ({ open, onO
 
     setIsGenerating(true);
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "NOT_CONFIGURED" });
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: `You are an expert educator. Based on the following input, generate a set of high-quality flashcards. 

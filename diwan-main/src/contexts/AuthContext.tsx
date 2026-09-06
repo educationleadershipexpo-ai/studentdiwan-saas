@@ -326,6 +326,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoginInProgress?.(true);
     try {
       let data: any = null;
+      let serverError: string | null = null;
 
       try {
         const loginRes = await fetch('/api/session/login', {
@@ -334,18 +335,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           body: JSON.stringify({ email, password })
         });
 
-        if (loginRes.ok) {
-          const contentType = loginRes.headers.get('content-type') || '';
-          if (contentType.includes('application/json')) {
-            data = await loginRes.json();
+        const contentType = loginRes.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          const resBody = await loginRes.json();
+          if (loginRes.ok) {
+            data = resBody;
+          } else {
+            serverError = resBody?.error || 'Incorrect email or password.';
           }
+        } else if (!loginRes.ok) {
+          serverError = `Server error (${loginRes.status}). Please try again.`;
         }
       } catch (netErr) {
-        console.warn("Backend session endpoint unavailable, proceeding with local auth fallback:", netErr);
+        console.warn("Backend session endpoint unavailable:", netErr);
+        serverError = 'Unable to connect to the authentication server.';
       }
 
-      // Fallback auth: guarantee successful login without ever showing raw backend prepare/database error popups
+      // Fallback auth: ONLY in non-production environments when backend is down/unavailable
       if (!data || !data.user) {
+        if (import.meta.env.PROD) {
+          throw new Error(serverError || 'Invalid email or password.');
+        }
+
         const cleanEmail = (email || "user@studentdiwan.com").toLowerCase();
         const isDemoAdmin = cleanEmail.includes('admin') || isDefaultAdminEmail(cleanEmail);
         const isTeacher = cleanEmail.includes('teacher');
@@ -391,7 +402,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error) {
       console.error('Email login error:', error);
-      toast.error('Unable to sign in. Please check your credentials.');
+      toast.error(error instanceof Error ? error.message : 'Unable to sign in. Please check your credentials.');
     } finally {
       setTimeout(() => setLoginInProgress?.(false), 3000);
     }

@@ -28,7 +28,8 @@ import { smartDb } from "@/lib/localDb";
 import { useAuth } from "@/hooks/useAuth";
 import { useGradeCoordinator } from "@/hooks/useGradeCoordinator";
 import { StudentDetailsDialog } from "@/components/students/StudentDetailsDialog";
-import { canonGrade, studentGrade, studentSection } from "@/lib/studentGradeSection";
+import { useGrades } from "@/contexts/CurriculumContext";
+import { canonGrade, canonSection, studentGrade, studentSection } from "@/lib/studentGradeSection";
 import { notifyParentsOfStudents } from "@/lib/classPublishNotify";
 
 const STATUS_PILLS = [
@@ -46,9 +47,11 @@ const Attendance = () => {
   // Filter state
   const [studentSearch, setStudentSearch] = useState("");
   const [studentStatus, setStudentStatus] = useState("all");
-  const [studentClass, setStudentClass] = useState("all");
+  const [studentGradeFilter, setStudentGradeFilter] = useState("all");
+  const [studentSectionFilter, setStudentSectionFilter] = useState("all");
   const [staffSearch, setStaffSearch] = useState("");
   const [staffStatus, setStaffStatus] = useState("all");
+  const curriculumGrades = useGrades();
 
   // Profile dialogs
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
@@ -189,17 +192,51 @@ const Attendance = () => {
     toast.success("Exported!");
   };
 
-  const classes = useMemo(() => Array.from(new Set(students.map((s) => s.class).filter(Boolean))).sort(), [students]);
+  const availableGrades = useMemo(() => {
+    const set = new Set<string>();
+    if (curriculumGrades?.length) {
+      curriculumGrades.forEach((g) => { if (g) set.add(g); });
+    }
+    students.forEach((s) => {
+      const g = s.grade || studentGrade(s.rawStudent || s);
+      if (g) set.add(g);
+    });
+    return Array.from(set).sort((a, b) => {
+      const numA = parseInt(a.replace(/\D/g, ""), 10);
+      const numB = parseInt(b.replace(/\D/g, ""), 10);
+      if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+      return a.localeCompare(b);
+    });
+  }, [students, curriculumGrades]);
+
+  const availableSections = useMemo(() => {
+    const set = new Set<string>();
+    students.forEach((s) => {
+      const sGrade = s.grade || studentGrade(s.rawStudent || s);
+      if (studentGradeFilter === "all" || canonGrade(sGrade) === canonGrade(studentGradeFilter)) {
+        const sec = s.section || studentSection(s.rawStudent || s);
+        if (sec && sec !== "—") set.add(canonSection(sec));
+      }
+    });
+    return Array.from(set).sort();
+  }, [students, studentGradeFilter]);
 
   const filteredStudents = useMemo(() => students.filter((s) => {
     const q = studentSearch.toLowerCase();
-    return (!q || s.name?.toLowerCase().includes(q) || s.id?.toLowerCase().includes(q)) &&
-      (studentStatus === "all" || s.status === studentStatus) &&
-      (studentClass === "all" || s.class === studentClass);
-  }), [students, studentSearch, studentStatus, studentClass]);
+    const matchesSearch = !q || s.name?.toLowerCase().includes(q) || s.id?.toLowerCase().includes(q);
+    const matchesStatus = studentStatus === "all" || s.status === studentStatus;
+    
+    const sGrade = s.grade || studentGrade(s.rawStudent || s);
+    const sSec = s.section || studentSection(s.rawStudent || s);
+
+    const matchesGrade = studentGradeFilter === "all" || canonGrade(sGrade) === canonGrade(studentGradeFilter);
+    const matchesSection = studentSectionFilter === "all" || canonSection(sSec) === canonSection(studentSectionFilter);
+
+    return matchesSearch && matchesStatus && matchesGrade && matchesSection;
+  }), [students, studentSearch, studentStatus, studentGradeFilter, studentSectionFilter]);
 
   // Reset to page 1 whenever any student filter changes
-  useEffect(() => { setCurrentPage(1); }, [studentSearch, studentStatus, studentClass]);
+  useEffect(() => { setCurrentPage(1); }, [studentSearch, studentStatus, studentGradeFilter, studentSectionFilter]);
 
   const totalPages = Math.ceil(filteredStudents.length / PAGE_SIZE);
   const paginatedStudents = filteredStudents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
@@ -353,22 +390,52 @@ const Attendance = () => {
                     ))}
                   </div>
 
-                  {/* Class select — always visible */}
-                  <Select value={studentClass} onValueChange={setStudentClass}>
+                  {/* Grade select */}
+                  <Select
+                    value={studentGradeFilter}
+                    onValueChange={(v) => {
+                      setStudentGradeFilter(v);
+                      setStudentSectionFilter("all");
+                    }}
+                  >
                     <SelectTrigger className="h-9 rounded-xl border-slate-200 bg-white text-xs font-bold w-36">
                       <SelectValue placeholder="All Grades" />
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl max-h-64">
                       <SelectItem value="all" className="text-xs font-medium">All Grades</SelectItem>
-                      {classes.map((c) => <SelectItem key={c} value={c} className="text-xs font-medium">{c}</SelectItem>)}
+                      {availableGrades.map((g) => (
+                        <SelectItem key={g} value={g} className="text-xs font-medium">
+                          {g.startsWith("Grade") || g.startsWith("KG") || g.startsWith("Pre") ? g : `Grade ${g}`}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {/* Section select */}
+                  <Select value={studentSectionFilter} onValueChange={setStudentSectionFilter}>
+                    <SelectTrigger className="h-9 rounded-xl border-slate-200 bg-white text-xs font-bold w-32">
+                      <SelectValue placeholder="All Sections" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-2xl max-h-64">
+                      <SelectItem value="all" className="text-xs font-medium">All Sections</SelectItem>
+                      {availableSections.map((sec) => (
+                        <SelectItem key={sec} value={sec} className="text-xs font-medium">
+                          Section {sec}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  {(studentStatus !== "all" || studentClass !== "all" || studentSearch) && (
+                  {(studentStatus !== "all" || studentGradeFilter !== "all" || studentSectionFilter !== "all" || studentSearch) && (
                     <button
-                      onClick={() => { setStudentStatus("all"); setStudentClass("all"); setStudentSearch(""); }}
+                      onClick={() => {
+                        setStudentStatus("all");
+                        setStudentGradeFilter("all");
+                        setStudentSectionFilter("all");
+                        setStudentSearch("");
+                      }}
                       className="text-[10px] font-bold text-primary underline whitespace-nowrap"
                     >
                       Clear
@@ -385,7 +452,16 @@ const Attendance = () => {
                 <span className="text-[11px] font-bold text-foreground">{filteredStudents.length}</span>
                 <span className="text-[11px] text-muted-foreground">of {students.length} students</span>
                 {studentStatus !== "all" && <span className="ml-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">{studentStatus}</span>}
-                {studentClass !== "all" && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">{studentClass}</span>}
+                {studentGradeFilter !== "all" && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                    {studentGradeFilter.startsWith("Grade") || studentGradeFilter.startsWith("KG") || studentGradeFilter.startsWith("Pre") ? studentGradeFilter : `Grade ${studentGradeFilter}`}
+                  </span>
+                )}
+                {studentSectionFilter !== "all" && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                    Section {studentSectionFilter}
+                  </span>
+                )}
               </div>
 
               <div className="overflow-x-auto">
@@ -722,8 +798,17 @@ function applyAttendance(
       const r = stuMap.get(s.id);
       const gradeVal = studentGrade(s);
       const sectionVal = studentSection(s);
-      const normalizedClass = gradeVal && sectionVal ? `${gradeVal}-${sectionVal}` : s.classId || "Unassigned";
-      return { id: s.id, name: s.name, class: normalizedClass, status: r?.status ?? "Present", time: r?.time ?? "08:00 AM" };
+      const normalizedClass = gradeVal && sectionVal ? `${gradeVal}-${sectionVal}` : gradeVal || s.classId || "Unassigned";
+      return {
+        id: s.id,
+        name: s.name,
+        class: normalizedClass,
+        grade: gradeVal,
+        section: sectionVal,
+        status: r?.status ?? "Present",
+        time: r?.time ?? "08:00 AM",
+        rawStudent: s,
+      };
     }),
   );
   setStaff(

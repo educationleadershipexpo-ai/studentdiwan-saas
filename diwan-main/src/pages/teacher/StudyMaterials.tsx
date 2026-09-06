@@ -104,11 +104,21 @@ export default function StudyMaterials() {
   const [items, setItems] = useState<Material[]>([]);
   useEffect(() => {
     if (!user) return;
-    const unsub = smartDb.watch("StudyMaterial", user.uid, (data: any[]) => {
-      setItems((data || []).sort((a,b) => new Date(b.createdAt||0).getTime() - new Date(a.createdAt||0).getTime()));
+    const unsub = smartDb.watch("StudyMaterial", undefined, (data: any[]) => {
+      const sorted = (data || []).sort((a,b) => new Date(b.createdAt||0).getTime() - new Date(a.createdAt||0).getTime());
+      if (sorted.length > 0) {
+        setItems(sorted);
+      } else {
+        setItems([
+          { id: "MAT-DEMO-1", title: "Chapter 1: Multi-digit Multiplication Notes", subject: "Mathematics", type: "PDF Notes", grade: "Grade 3", section: "B", chapter: "Chapter 1", lesson: "Lesson 1", teacher: teacherName, createdAt: new Date().toISOString(), link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+          { id: "MAT-DEMO-2", title: "Interactive Math Games Slide Deck", subject: "Mathematics", type: "PPT Presentation", grade: "Grade 3", section: "B", chapter: "Chapter 1", lesson: "Lesson 2", teacher: teacherName, createdAt: new Date().toISOString(), link: "https://example.com/slides.pdf" },
+          { id: "MAT-DEMO-3", title: "Photosynthesis Video Lecture", subject: "Science", type: "Video Link", grade: "Grade 3", section: "B", chapter: "Chapter 2", lesson: "Lesson 1", teacher: teacherName, createdAt: new Date().toISOString(), link: "https://www.youtube.com/watch?v=D1Ymc391fSU" },
+          { id: "MAT-DEMO-4", title: "English Grammar Rules Summary", subject: "English", type: "PDF Notes", grade: "Grade 3", section: "B", chapter: "Chapter 1", lesson: "Lesson 1", teacher: teacherName, createdAt: new Date().toISOString(), link: "https://example.com/grammar.pdf" },
+        ]);
+      }
     });
     return () => unsub();
-  }, [user]);
+  }, [user, teacherName]);
 
   // Navigation
   const [screen, setScreen] = useState<Screen>({ view: "folders" });

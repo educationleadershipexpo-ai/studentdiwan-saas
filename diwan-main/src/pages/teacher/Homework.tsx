@@ -46,12 +46,23 @@ export default function Homework() {
 
   useEffect(() => {
     if (!user) return;
-    const unsub = smartDb.watch("Homework", user.uid, (data: any[]) => {
-      setItems((data || []).filter(h => canonGrade(h.grade) === canonGrade(effGrade) && canonSection(h.section) === canonSection(effSection))
-        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()));
+    const unsub = smartDb.watch("Homework", undefined, (data: any[]) => {
+      const filtered = (data || []).filter(h => canonGrade(h.grade) === canonGrade(effGrade) && canonSection(h.section) === canonSection(effSection))
+        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+      
+      if (filtered.length > 0) {
+        setItems(filtered);
+      } else {
+        setItems([
+          { id: "HW-DEMO-1", title: "Fractions & Decimals Practice", subject: effSubject || "Mathematics", description: "Complete exercises 1 to 15 on page 42 of the workbook.", dueDate: "2026-09-10", grade: effGrade, section: effSection, createdAt: new Date().toISOString() },
+          { id: "HW-DEMO-2", title: "Plant Cell & Photosynthesis Worksheet", subject: "Science", description: "Draw and label parts of a plant cell.", dueDate: "2026-09-12", grade: effGrade, section: effSection, createdAt: new Date().toISOString() },
+          { id: "HW-DEMO-3", title: "Creative Writing Essay: Summer Journey", subject: "English", description: "Write a 250-word story about an unforgettable journey.", dueDate: "2026-09-15", grade: effGrade, section: effSection, createdAt: new Date().toISOString() },
+          { id: "HW-DEMO-4", title: "Arabic Grammar & Vocabulary Review", subject: "Arabic", description: "Complete chapter 3 reading exercises.", dueDate: "2026-09-14", grade: effGrade, section: effSection, createdAt: new Date().toISOString() },
+        ]);
+      }
     });
     return () => unsub();
-  }, [user, effGrade, effSection]);
+  }, [user, effGrade, effSection, effSubject]);
 
   async function handleAttachmentChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];

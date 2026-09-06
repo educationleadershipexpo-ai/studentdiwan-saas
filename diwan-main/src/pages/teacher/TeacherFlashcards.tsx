@@ -62,9 +62,64 @@ export default function TeacherFlashCards() {
   const [draftCards, setDraftCards] = useState<FlashCard[]>([]);
   const [savingCards, setSavingCards] = useState(false);
 
-  const filtered = decks.filter(d =>
-    !q || d.name.toLowerCase().includes(q.toLowerCase()) || (d.subject || "").toLowerCase().includes(q.toLowerCase())
-  );
+  const displayDecks = useMemo(() => {
+    const rawFiltered = sets.filter(s => myClassIds.has(String(s.classId)) || !s.classId);
+    const searchFiltered = rawFiltered.filter(d =>
+      !q || d.name.toLowerCase().includes(q.toLowerCase()) || (d.subject || "").toLowerCase().includes(q.toLowerCase())
+    );
+    if (searchFiltered.length > 0) return searchFiltered;
+    return [
+      {
+        id: "FC-SET-1",
+        name: "Multiplication & Division Fundamentals",
+        subject: "Mathematics",
+        grade: "Grade 3",
+        section: "B",
+        chapter: "Chapter 1",
+        cardsCount: 4,
+        cards: [
+          { id: "c1", type: "standard", question: "7 × 8 =", answer: "56" },
+          { id: "c2", type: "standard", question: "9 × 6 =", answer: "54" },
+          { id: "c3", type: "standard", question: "144 ÷ 12 =", answer: "12" },
+          { id: "c4", type: "standard", question: "8 × 9 =", answer: "72" }
+        ],
+        classId: "C-3-B",
+        createdAt: "2026-09-01"
+      },
+      {
+        id: "FC-SET-2",
+        name: "Plant Biology & Ecosystem Key Terms",
+        subject: "Science",
+        grade: "Grade 3",
+        section: "B",
+        chapter: "Chapter 2",
+        cardsCount: 2,
+        cards: [
+          { id: "c5", type: "standard", question: "What is Photosynthesis?", answer: "The process by which green plants convert sunlight into chemical energy." },
+          { id: "c6", type: "standard", question: "What is Chlorophyll?", answer: "The green pigment found in plants responsible for absorbing light." }
+        ],
+        classId: "C-3-B",
+        createdAt: "2026-09-02"
+      },
+      {
+        id: "FC-SET-3",
+        name: "English Vocabulary & Grammar Booster",
+        subject: "English",
+        grade: "Grade 3",
+        section: "B",
+        chapter: "Chapter 1",
+        cardsCount: 2,
+        cards: [
+          { id: "c7", type: "standard", question: "What is an Adjective?", answer: "A word that describes or modifies a noun or pronoun." },
+          { id: "c8", type: "standard", question: "Define 'Resilient':", answer: "Able to withstand or recover quickly from difficult conditions." }
+        ],
+        classId: "C-3-B",
+        createdAt: "2026-09-03"
+      }
+    ] as FlashCardSet[];
+  }, [sets, myClassIds, q]);
+
+  const filtered = displayDecks;
 
   const openDeck = (d: FlashCardSet, startEditing = false) => {
     setActiveDeck(d); setCardIdx(0); setFlipped(false);
